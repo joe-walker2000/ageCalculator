@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const textInputDecoration = InputDecoration(
-  icon: Icon(Icons.calendar_today),
+  //icon: Icon(Icons.calendar_today),
   hintText: 'Enter the Date',
   fillColor: Colors.white,
   filled: true,
