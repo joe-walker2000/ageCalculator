@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  _buildOutputColumn(String head, String val) {
+  Widget _buildOutputColumn(String head, String val) {
     return Container(
       color: Colors.orangeAccent,
       child: Column(
