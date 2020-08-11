@@ -79,9 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     Widget dateOfBirthHeader = _buildHeaders('Date of Birth:');
-    Widget dateOfChoiceHeader = _buildHeaders('Today\'s Date:');
     Widget birthdayTextField =
         _buildTextInputField(_dateOfBirth, selectDate, context, true);
+    Widget dateOfChoiceHeader = _buildHeaders('Today\'s Date:');
     Widget choicedayTextField =
         _buildTextInputField(_dateOfChoise, selectDate, context, false);
     Widget clearButton = _buildActionButtons('Clear', true);
