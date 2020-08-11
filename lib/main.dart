@@ -150,8 +150,8 @@ Widget _buildTextInputField(DateTime value, Function datePicker,
     BuildContext context, bool isDateOfBirth) {
   return TextFormField(
     controller: TextEditingController(text: formatedDate(value)),
-    // controller:
-    //     TextEditingController(text: formatedDate(_dateOfBirth)),
+    showCursor: true,
+    readOnly: true,
     decoration: textInputDecoration.copyWith(
       hintText: 'Date of Birth',
       suffixIcon: IconButton(
