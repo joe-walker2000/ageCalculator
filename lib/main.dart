@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:age/age.dart';
+import 'package:age_calc/ageCalculations.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -53,10 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    age =
+        AgeCalculations(dateOfBirth: _dateOfBirth, dateOfChoise: _dateOfChoise);
     calcAction() {
       setState(() {
-        calculatedAge = calcAge(_dateOfBirth, _dateOfChoise);
-        nextBirthday = calcLeftTime(_dateOfBirth, _dateOfChoise);
+        calculatedAge = age.calcAge();
+        print(calculatedAge);
+        nextBirthday = age.calcLeftTime();
       });
     }
 
@@ -138,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
 Widget _buildTextInputField(DateTime value, Function datePicker,
     BuildContext context, bool isDateOfBirth) {
   return TextFormField(
-    controller: TextEditingController(text: formatedDate(value)),
+    controller: TextEditingController(text: age.formatedDate(value)),
     showCursor: true,
     readOnly: true,
     decoration: textInputDecoration.copyWith(
@@ -182,7 +185,6 @@ Widget _buildHeaders(String txt) {
         style: TextStyle(
           fontSize: 20.0,
         ),
-        //textAlign: TextAlign.left,
       ),
     ),
   );
@@ -214,35 +216,13 @@ Widget _buildOutputColumn(String head, String val) {
   );
 }
 
-String formatedDate(date) {
-  return DateFormat('dd-MM-yyyy').format(date);
-}
-
 DateTime _dateOfBirth = DateTime.now();
 DateTime _dateOfChoise = DateTime.now();
 AgeDuration calculatedAge = AgeDuration(years: 0, months: 0, days: 0);
 AgeDuration nextBirthday = AgeDuration(years: 0, months: 0, days: 0);
-
-AgeDuration calcAge(DateTime birthDay, DateTime targetDay) {
-  AgeDuration age;
-  age = Age.dateDifference(
-      fromDate: birthDay, toDate: targetDay, includeToDate: false);
-
-  return age;
-}
-
-AgeDuration calcLeftTime(DateTime birthDay, DateTime targetDay) {
-  DateTime tempDate = DateTime(targetDay.year, birthDay.month, birthDay.day);
-  DateTime nextBirthdayDate = tempDate.isBefore(targetDay)
-      ? Age.add(date: tempDate, duration: AgeDuration(years: 1))
-      : tempDate;
-  AgeDuration nextBirthdayDuration =
-      Age.dateDifference(fromDate: targetDay, toDate: nextBirthdayDate);
-  return nextBirthdayDuration;
-}
+AgeCalculations age;
 
 const textInputDecoration = InputDecoration(
-  //icon: Icon(Icons.calendar_today),
   hintText: 'Enter the Date',
   fillColor: Colors.white,
   filled: true,
