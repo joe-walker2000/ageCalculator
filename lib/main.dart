@@ -4,6 +4,9 @@ import 'package:age/age.dart';
 
 void main() {
   runApp(MaterialApp(
+    theme: ThemeData(
+        primaryColor: Colors.orangeAccent,
+        visualDensity: VisualDensity.adaptivePlatformDensity),
     home: MyApp(),
   ));
 }
@@ -48,44 +51,30 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Widget _buildActionButtons(String name, bool isClearButton) {
-    return SizedBox(
-      height: 50.0,
-      width: 180.0,
-      child: FlatButton(
-        onPressed: () {
-          isClearButton
-              ? setState(() {
-                  calculatedAge = AgeDuration(years: 0, months: 0, days: 0);
-                  nextBirthday = AgeDuration(years: 0, months: 0, days: 0);
-                })
-              : setState(() {
-                  calculatedAge = calcAge(_dateOfBirth, _dateOfChoise);
-                  nextBirthday = calcLeftTime(_dateOfBirth, _dateOfChoise);
-                });
-        },
-        child: Text(
-          name,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
-        ),
-        color: Colors.orangeAccent,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    calcAction() {
+      setState(() {
+        calculatedAge = calcAge(_dateOfBirth, _dateOfChoise);
+        nextBirthday = calcLeftTime(_dateOfBirth, _dateOfChoise);
+      });
+    }
+
+    clearAction() {
+      setState(() {
+        calculatedAge = AgeDuration(years: 0, months: 0, days: 0);
+        nextBirthday = AgeDuration(years: 0, months: 0, days: 0);
+      });
+    }
+
     Widget dateOfBirthHeader = _buildHeaders('Date of Birth:');
     Widget birthdayTextField =
         _buildTextInputField(_dateOfBirth, selectDate, context, true);
     Widget dateOfChoiceHeader = _buildHeaders('Today\'s Date:');
     Widget choicedayTextField =
         _buildTextInputField(_dateOfChoise, selectDate, context, false);
-    Widget clearButton = _buildActionButtons('Clear', true);
-    Widget calcButton = _buildActionButtons('Calculate', false);
+    Widget clearButton = _buildActionButtons('Clear', clearAction);
+    Widget calcButton = _buildActionButtons('Calculate', calcAction);
     Widget ageHeader = _buildHeaders('Age is :');
     Widget years = _buildOutputColumn('Years', calculatedAge.years.toString());
     Widget months =
@@ -161,6 +150,24 @@ Widget _buildTextInputField(DateTime value, Function datePicker,
           onPressed: () {
             datePicker(context, isDateOfBirth);
           }),
+    ),
+  );
+}
+
+Widget _buildActionButtons(String name, Function _onPressed) {
+  return SizedBox(
+    height: 50.0,
+    width: 180.0,
+    child: FlatButton(
+      onPressed: _onPressed,
+      child: Text(
+        name,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20.0,
+        ),
+      ),
+      color: Colors.orangeAccent,
     ),
   );
 }
